@@ -1,0 +1,53 @@
+wsmlVariant _"http://www.wsmo.org/wsml/wsml-syntax/wsml-rule"
+namespace {_"http://ufs.br/ontologies/hockey#"}
+
+ontology hockey
+
+    concept Team
+        name ofType _string
+
+	concept Date
+		day ofType _integer
+		month ofType _string
+		year ofType _integer
+	
+    concept HockeyGame
+       date ofType Date
+       homeTeam ofType Team
+       awayTeam ofType Team
+       htScore ofType _integer
+       atScore ofType _integer
+
+       
+     axiom wonHomeTeam definedBy
+	   ?z [htScore hasValue ?hs, atScore hasValue ?as, homeTeam hasValue ?h,
+           awayTeam hasValue ?a] memberOf HockeyGame and (?hs > ?as) implies
+           won(?h, ?a, ?hs, ?as). 
+
+     axiom wonAwayTeam definedBy
+	   ?z [htScore hasValue ?hs, atScore hasValue ?as, homeTeam hasValue ?h,
+           awayTeam hasValue ?a] memberOf HockeyGame and (?as > ?hs) implies
+           won(?a, ?h, ?as, ?hs). 
+
+
+instance saopaulo memberOf Team
+   name hasValue "Sao Paulo"
+   city hasValue "Sao Paulo"
+   
+instance palmeiras memberOf Team
+   name hasValue "Palmeiras"
+   city hasValue "Sao Paulo"
+
+instance date01 memberOf Date
+  day hasValue 30
+  month hasValue "August"
+  year hasValue 1981
+
+instance game01 memberOf HockeyGame
+   date hasValue date01
+   homeTeam hasValue saopaulo
+   awayTeam hasValue palmeiras
+   htScore hasValue 5
+   atScore hasValue 1
+
+ 
